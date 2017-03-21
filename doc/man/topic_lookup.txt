@@ -1,0 +1,15 @@
+NAME
+	topic_lookup - discover the list of existing topics
+
+SYNOPSIS
+	#include ...
+
+	int topic_lookup(topicid_t **topic_ids)
+
+DESCRIPTION
+	topic_lookup() allows a process to discover what topics there are. The list of existing topic IDs is returned via the argument topic_ids. The caller should free(3) the returned array.
+
+RETURN VALUE
+	On success, the number of existing topics is returned and topic_ids points to an array of the same size containing the topics IDs. If the number of existing topics is zero, topic_ids is set to NULL.
+
+	If memory allocation wasn't possible, or some other error occurs, -1 is returned and topic_ids is set to NULL.

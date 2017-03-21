@@ -1,0 +1,16 @@
+NAME
+	topic_create - create a new topic
+
+SYNOPSIS
+	#include ...
+
+	int topic_create(topicid_t id)
+
+DESCRIPTION
+	topic_create() allows a process to create a topic named id. If a topic with the same id already exists, it returns an error.
+
+RETURN VALUE
+	On success, zero is returned.
+
+	If a topic with same id already exists, it returns -1.
+	If another error occurs, it returrns -2.

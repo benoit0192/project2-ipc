@@ -1,0 +1,17 @@
+NAME
+	topic_subscribe - register a process to receive messages published in a topic.
+
+SYNOPSIS
+	#include ...
+
+	int topic_subscribe(topicid_t id)
+
+DESCRIPTION
+	topic_subscribe() allows a process to declare itself a subscriber to a topic in order to retrieve future messages. If the specified topic doesn't exist, it returns an error.
+
+RETURN VALUE
+	On success, zero is returned.
+
+	If the specified topic doesn't exist, -1 is returned.
+	If the user is already registered in this topic, -2 is returned.
+	If another error occurs, -3 is returned.
