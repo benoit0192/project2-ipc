@@ -58,5 +58,14 @@ int (* const call_vec[NR_PM_CALLS])(void) = {
 	CALL(PM_EXEC_RESTART)	= do_execrestart,
 	CALL(PM_GETEPINFO)	= do_getepinfo,		/* getepinfo(2) */
 	CALL(PM_GETPROCNR)	= do_getprocnr,		/* getprocnr(2) */
-	CALL(PM_GETSYSINFO)	= do_getsysinfo		/* getsysinfo(2) */
+	CALL(PM_GETSYSINFO)	= do_getsysinfo,		/* getsysinfo(2) */
+
+	CALL(PM_TOPIC_LOOKUP)	             = do_topic_lookup,
+	CALL(PM_TOPIC_CREATE)	             = do_topic_create,
+	CALL(PM_TOPIC_PUBLISHER_SUBSCRIBE)	 = do_topic_publisher_subscribe,
+	CALL(PM_TOPIC_PUBLISHER_UNSUBSCRIBE) = do_topic_publisher_unsubscribe,
+	CALL(PM_TOPIC_CLIENT_SUBSCRIBE)	     = do_topic_client_subscribe,
+	CALL(PM_TOPIC_CLIENT_UNSUBSCRIBE)	 = do_topic_client_unsubscribe,
+	CALL(PM_TOPIC_PUBLISH)	             = do_topic_publish,
+	CALL(PM_TOPIC_RETRIEVE)	             = do_topic_retrieve
 };

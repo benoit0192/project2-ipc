@@ -27,6 +27,9 @@ SRCS+= 	accept.c access.c adjtime.c bind.c brk.c sbrk.c m_closefrom.c getsid.c \
 # Minix specific syscalls / utils.
 SRCS+= cprofile.c sprofile.c stack_utils.c _mcontext.c
 
+# CS551 files
+SRCS+= topic.c
+
 # Emulation for missing lchown/lchmod
 OBJS+= lchown.o lchmod.o
 lchown.o lchown.pico lchown.bc: ${NETBSDSRCDIR}/tools/compat/lchown.c

@@ -89,3 +89,13 @@ struct mproc *find_proc(pid_t lpid);
 int nice_to_priority(int nice, unsigned *new_q);
 int pm_isokendpt(int ep, int *proc);
 void tell_vfs(struct mproc *rmp, message *m_ptr);
+
+/* topic.c */
+int do_topic_lookup(void);
+int do_topic_create(void);
+int do_topic_publisher_subscribe(void);
+int do_topic_publisher_unsubscribe(void);
+int do_topic_client_subscribe(void);
+int do_topic_client_unsubscribe(void);
+int do_topic_publish(void);
+int do_topic_retrieve(void);

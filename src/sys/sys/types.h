@@ -387,4 +387,7 @@ struct	uio;
 #endif
 #endif /* !__minix */
 
+/* CS551 - Project 2 - TOPIC */
+typedef	uint32_t	topicid_t;
+
 #endif /* !_SYS_TYPES_H_ */
