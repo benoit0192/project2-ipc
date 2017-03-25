@@ -2,15 +2,17 @@ NAME
 	topic_retrieve - retrieve a message from a topic.
 
 SYNOPSIS
-	#include ...
+	#include <topic.h>
 
-	int topic_retrieve(topicid_t id, char **buf)
+	int topic_retrieve(topicid_t id, void **buf)
 
 DESCRIPTION
 	topic_retrieve() allows a process to retrieve a message from a topic.
+	The returned buffer is allocated by the function.
+	The caller should free(3) the returned buffer.  
 
 RETURN VALUE
-	On success, buf is set to an allocated buffer containing a message, and the function returns the size of the message.
+	On success, 'buf' is set to an allocated buffer containing a message, and the function returns the size of the message.
 
 	If the specified topic doesn't exist, -1 is returned.
 	If the process is not registered to retrieve messages from this topic, -2 is returned.

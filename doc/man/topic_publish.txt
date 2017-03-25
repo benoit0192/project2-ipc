@@ -2,17 +2,18 @@ NAME
 	topic_publish - publish a message in a topic.
 
 SYNOPSIS
-	#include ...
+	#include <topic.h>
 
-	int topic_publish(topicid_t id, char *buf, size_t size)
+	int topic_publish(topicid_t id, void *buf, size_t count)
 
 DESCRIPTION
-	topic_publish() allows a process to send a message to a topic.
+	topic_publish() allows a process to send a message to a topic. The message consists in the first 'count' bytes of buffer 'buf'.
 
 RETURN VALUE
 	On success, zero is returned.
 
 	If the specified topic doesn't exist, -1 is returned.
 	If the maximum number of stored messages is reached, -2 is returned.
-	// If the process is not registered as a publisher, -3 is returned.
-	If another error occurs, -3 is returned.
+	If the process is not registered as a publisher, -3 is returned.
+	If 'count' is less or equal to zero, -4 is returned.
+	If another error occurs, -5 is returned.

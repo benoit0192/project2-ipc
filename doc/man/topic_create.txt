@@ -2,7 +2,7 @@ NAME
 	topic_create - create a new topic
 
 SYNOPSIS
-	#include ...
+	#include <topic.h>
 
 	int topic_create(topicid_t id)
 

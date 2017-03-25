@@ -2,9 +2,9 @@ NAME
 	topic_lookup - discover the list of existing topics
 
 SYNOPSIS
-	#include ...
+	#include <topic.h>
 
-	int topic_lookup(topicid_t **topic_ids)
+	int topic_lookup(topicid_t[] *topic_ids)
 
 DESCRIPTION
 	topic_lookup() allows a process to discover what topics there are. The list of existing topic IDs is returned via the argument topic_ids. The caller should free(3) the returned array.
