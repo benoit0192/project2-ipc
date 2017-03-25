@@ -31,3 +31,16 @@ dialup|unknown|network)
 	TERM="${term:-$TERM}"
 	unset term
 esac
+
+# customize shell
+cd() {
+	command cd "$@"
+	PS1="$(pwd) > "
+}
+PS1="$(pwd) > "
+export HOME=/home/
+cd
+mkdir -p /mnt/shared
+mount -t vbfs -o share=share none /mnt/shared
+alias ossync="rsync -r --progress --exclude '.git' /mnt/shared/  /home/repo/"
+alias recomp="cd /home/repo/src/releasetools && make hdboot"

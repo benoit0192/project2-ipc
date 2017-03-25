@@ -59,7 +59,17 @@
 #define PM_GETPROCNR		(PM_BASE + 46)
 #define PM_GETSYSINFO		(PM_BASE + 47)
 
-#define NR_PM_CALLS		48	/* highest number from base plus one */
+// TOPIC
+#define PM_TOPIC_LOOKUP                (PM_BASE + 48)
+#define PM_TOPIC_CREATE                (PM_BASE + 49)
+#define PM_TOPIC_PUBLISHER_SUBSCRIBE   (PM_BASE + 50)
+#define PM_TOPIC_PUBLISHER_UNSUBSCRIBE (PM_BASE + 51)
+#define PM_TOPIC_CLIENT_SUBSCRIBE      (PM_BASE + 52)
+#define PM_TOPIC_CLIENT_UNSUBSCRIBE    (PM_BASE + 53)
+#define PM_TOPIC_PUBLISH               (PM_BASE + 54)
+#define PM_TOPIC_RETRIEVE              (PM_BASE + 55)
+
+#define NR_PM_CALLS		56	/* highest number from base plus one */
 
 /*===========================================================================*
  *				Calls to VFS				     *
@@ -120,5 +130,17 @@
 #define VFS_GETSYSINFO		(VFS_BASE + 48)
 
 #define NR_VFS_CALLS		49	/* highest number from base plus one */
+
+/*===========================================================================*
+ *				Calls to Topic				     *
+ *===========================================================================*/
+
+#define TOPIC_BASE              0x200
+
+#define IS_TOPIC_CALL(type)	(((type) & ~0xff) == TOPIC_BASE)
+
+#define TOPIC_MY_SYSCALL		(TOPIC_BASE + 0)
+
+#define NR_TOPIC_CALLS		1	/* highest number from base plus one */
 
 #endif /* !_MINIX_CALLNR_H */

@@ -411,5 +411,16 @@ extern	 int optreset;		/* getopt(3) external variable */
 extern	 char *suboptarg;	/* getsubopt(3) external variable */
 #endif
 
+/* CS551 - Project 2 - TOPIC */
+
+int topic_lookup(topicid_t **);
+int topic_create(topicid_t);
+int topic_publisher_subscribe(topicid_t);
+int topic_publisher_unsubscribe(topicid_t);
+int topic_client_subscribe(topicid_t);
+int topic_client_unsubscribe(topicid_t);
+int topic_publish(topicid_t, void*, size_t);
+int topic_retrieve(topicid_t, void**);
+
 __END_DECLS
 #endif /* !_UNISTD_H_ */
