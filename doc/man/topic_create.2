@@ -1,0 +1,32 @@
+.TH TOPIC_CREATE 2 "March 25, 2017"
+.UC
+.SH NAME
+topic_create \- create a new topic
+.SH SYNOPSIS
+.nf
+.ft B
+#include <topic.h>
+
+int topic_create(topicid_t id)
+.ft R
+.fi
+.SH DESCRIPTION
+.de SP
+.if t .sp 0.4
+.if n .sp
+..
+.B Topic_create
+allows a process to create a topic named id. If a topic with the same id already exists, it returns an error.
+.SH "RETURN VALUE
+On success, zero is returned.
+If a topic with same id already exists, it returns \-1.
+If another error occurs, it returrns \-2.
+.SH "SEE ALSO"
+.BR topic_lookup (2),
+.BR topic_publisher_subscribe (2).
+.BR topic_publisher_unsubscribe (2).
+.BR topic_client_subscribe (2).
+.BR topic_client_unsubscribe (2).
+.BR topic_publish (2).
+.BR topic_retrieve (2).
+.
