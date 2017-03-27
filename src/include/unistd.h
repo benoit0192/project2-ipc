@@ -413,7 +413,7 @@ extern	 char *suboptarg;	/* getsubopt(3) external variable */
 
 /* CS551 - Project 2 - TOPIC */
 
-int topic_lookup(topicid_t **);
+int topic_lookup(topicid_t *, size_t);
 int topic_create(topicid_t);
 int topic_publisher_subscribe(topicid_t);
 int topic_publisher_unsubscribe(topicid_t);

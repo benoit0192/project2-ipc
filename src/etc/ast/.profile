@@ -38,9 +38,13 @@ cd() {
 	PS1="$(pwd) > "
 }
 PS1="$(pwd) > "
+
 export HOME=/home/
 cd
+
 mkdir -p /mnt/shared
 mount -t vbfs -o share=share none /mnt/shared
-alias ossync="rsync -r --progress --exclude '.git' /mnt/shared/  /home/repo/"
+
+export RSYNC="rsync -cr --progress"
+alias ossync="$RSYNC /mnt/shared/src/etc/ /home/repo/src/etc/ && $RSYNC /mnt/shared/src/include/ /home/repo/src/include/ && $RSYNC /mnt/shared/src/minix/ /home/repo/src/minix/ && $RSYNC /mnt/shared/src/sys/ /home/repo/src/sys/ && $RSYNC --exclude "src" --exclude ".git" /mnt/shared/ /home/repo/"
 alias recomp="cd /home/repo/src/releasetools && make hdboot"
