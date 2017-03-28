@@ -254,7 +254,7 @@ int do_topic_publish(void) {
     struct topic **t;
     struct user_elt **u, **u2, *u_tmp;
     struct topic_message **m, *m_tmp;
-    int n, r;
+    int n;
 
     /* get arguments */
     topicid_t   id      = (topicid_t) m_in.m1_i1;
@@ -357,8 +357,38 @@ int do_topic_publish(void) {
 int do_topic_retrieve(void) {
     _SYSCALL_BEGIN("topic_retrieve()");
 
-    topicid_t id   = (topicid_t) m_in.m1_i1;
-    printf("retrieve message from topic #%d\n", id);
+    struct topic **t;
+    struct user_elt **u,*tmp;
+    topic_message **m;
 
-    return ENOSYS;
+    /* get arguments */
+    topicid_t   id      =  (topicid_t) m_in.m1_i1;
+    vir_bytes   buf     =  (vir_bytes) m_in.m1_p1;
+    pid_t       pid     =  (pid_t)     m_in.m1_i2;
+
+    /* topic must exist */
+    t = get_topic(id);
+    if( !(*t) ) return ENOENT;
+
+    /* subscriber must be registered */
+    u = get_user( &(*t)->subscribers, pid );
+    if( !(*u) ) return EACCES;
+
+    for(m = &(*t)->messages; *m; m = &(*m)->next) {
+        u = get_user( &(*m)->to_retrieve, pid );
+        if( *u ) break;
+    }
+    
+    /* no message for the user */
+    if( !(*m) ) return ENOMSG;
+
+    /* if there is a buffer, copy the message to user space */
+    if( buf ) {
+        if(sys_datacopy(PM_PROC_NR, (vir_bytes)(*m)->buf, who_e, (vir_bytes) buf, (*m)->size) != OK)
+            return EGENERIC;
+        tmp = (*u)->next;
+        free(*u);
+        *u = tmp;
+    }
+    return (*m)->size;
 }
