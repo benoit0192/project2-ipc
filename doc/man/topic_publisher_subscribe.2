@@ -7,11 +7,12 @@ SYNOPSIS
 	int topic_publisher_subscribe(topicid_t id)
 
 DESCRIPTION
-	topic_publisher_subscribe() allows a process to add itself from the publisher list of a topic. If the specified topic doesn't exist, it returns an error.
+	topic_publisher_subscribe() allows a process to add itself from the publisher list of a topic. If the specified topic doesn't exist, it returns an error. 
 
 RETURN VALUE
-	On success, zero is returned.
+	On success, zero is returned. Otherwise, a value of -1 is returned, and the global variable errno is set to indicate the error.
 
-	If the specified topic doesn't exist, -1 is returned.
-	If the user is already registered in this topic, -2 is returned.
-	If another error occurs, -3 is returned.
+ERRORS
+	If the specified topic doesn't exist, ENOENT is returned.
+	If the user is already registered in this topic, EALREADY is returned.
+	Not enough memory to create a new publisher. [ENOMEM]

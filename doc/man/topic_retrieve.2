@@ -9,11 +9,12 @@ SYNOPSIS
 DESCRIPTION
 	topic_retrieve() allows a process to retrieve a message from a topic.
 	The returned buffer is allocated by the function.
-	The caller should free(3) the returned buffer.  
+	The caller should free(3) the returned buffer.
 
 RETURN VALUE
-	On success, 'buf' is set to an allocated buffer containing a message, and the function returns the size of the message.
+	On success, 'buf' is set to an allocated buffer containing a message, and the function returns the size of the message. Otherwise, a value of -1 is returned, and the global variable errno is set to indicate the error.
 
-	If the specified topic doesn't exist, -1 is returned.
-	If the process is not registered to retrieve messages from this topic, -2 is returned.
-	If another error occurs, -3 is returned.
+ERRORS
+	If the specified topic doesn't exist, ENOENT is returned.
+	If the process is not registered to retrieve messages from this topic, ENXIO is returned.
+	If another error occurs, EBADRQC is returned.

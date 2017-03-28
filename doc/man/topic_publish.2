@@ -10,10 +10,12 @@ DESCRIPTION
 	topic_publish() allows a process to send a message to a topic. The message consists in the first 'count' bytes of buffer 'buf'.
 
 RETURN VALUE
-	On success, zero is returned.
+	On success, zero is returned. Otherwise, a value of -1 is returned, and the global variable errno is set to indicate the error.
 
-	If the specified topic doesn't exist, -1 is returned.
-	If the maximum number of stored messages is reached, -2 is returned.
-	If the process is not registered as a publisher, -3 is returned.
-	If 'count' is less or equal to zero, -4 is returned.
-	If another error occurs, -5 is returned.
+ERRORS
+	If the specified topic doesn't exist, ENOENT is returned.
+	If the maximum number of stored messages is reached, ENOBUFS is returned.
+	If the process is not registered as a publisher, EACCES is returned.
+	If 'count' is equal to zero, EINVAL is returned.
+	Not enough memory to create a new message. [ENOMEM]
+	If another error occurs, EGENERIC is returned.

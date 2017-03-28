@@ -10,8 +10,8 @@ DESCRIPTION
 	topic_client_unsubscribe() allows a process to remove itself from the subscriber list of a topic. If the specified topic doesn't exist, it returns an error.
 
 RETURN VALUE
-	On success, zero is returned.
+	On success, zero is returned. Otherwise, a value of -1 is returned, and the global variable errno is set to indicate the error.
 
-	If the specified topic doesn't exist, -1 is returned.
-	If the user wasn't registered in this topic, -2 is returned.
-	If another error occurs, -3 is returned.
+ERRORS
+	If the specified topic doesn't exist, ENOENT is returned.
+	If the user wasn't registered in this topic, EINVAL is returned.

@@ -1,5 +1,4 @@
-.TH TOPIC_CREATE 2 "March 25, 2017"
-.UC
+.TH TOPIC_CREATE 2 "March 25, 2017" "CS551" "OS Syscall Manual"
 .SH NAME
 topic_create \- create a new topic
 .SH SYNOPSIS
@@ -15,18 +14,22 @@ int topic_create(topicid_t id)
 .if t .sp 0.4
 .if n .sp
 ..
-.B Topic_create
-allows a process to create a topic named id. If a topic with the same id already exists, it returns an error.
+.B topic_create()
+allows a process to create a topic named \fBid\fP. If a topic with the same \fBid\fP already exists, it returns an error.
 .SH "RETURN VALUE
-On success, zero is returned.
-If a topic with same id already exists, it returns \-1.
-If another error occurs, it returrns \-2.
+On success, zero is returned. Otherwise, a value of \-1 is returned, and the global variable \fBerrno\fP is set to indicate the error.
+.SH ERRORS
+.TP 15
+[EAGAIN]
+A topic with same \fBid\fP already exists.
+.TP 15
+[ENOMEM]
+Not enough memory to create a new topic.
 .SH "SEE ALSO"
-.BR topic_lookup (2),
-.BR topic_publisher_subscribe (2).
-.BR topic_publisher_unsubscribe (2).
-.BR topic_client_subscribe (2).
-.BR topic_client_unsubscribe (2).
-.BR topic_publish (2).
+.BR topic_lookup (2)
+.BR topic_publisher_subscribe (2),
+.BR topic_publisher_unsubscribe (2),
+.BR topic_client_subscribe (2),
+.BR topic_client_unsubscribe (2),
+.BR topic_publish (2),
 .BR topic_retrieve (2).
-.

@@ -4,12 +4,15 @@ NAME
 SYNOPSIS
 	#include <topic.h>
 
-	int topic_lookup(topicid_t[] *topic_ids)
+	int topic_lookup(topicid_t topic_ids[], size_t count)
 
 DESCRIPTION
-	topic_lookup() allows a process to discover what topics there are. The list of existing topic IDs is returned via the argument topic_ids. The caller should free(3) the returned array.
+	topic_lookup() allows a process to discover what topics there are. The list of existing topic IDs is returned in the provided array 'topic_ids' of size 'count'.
+	The user must provide a large enough array otherwise ERANGE is raised.
 
 RETURN VALUE
-	On success, the number of existing topics is returned and topic_ids points to an array of the same size containing the topics IDs. If the number of existing topics is zero, topic_ids is set to NULL.
+	On success, the number of existing topics is returned and topic_ids contains the topic IDs. Otherwise, a value of -1 is returned, and the global variable errno is set to indicate the error.
 
-	If memory allocation wasn't possible, or some other error occurs, -1 is returned and topic_ids is set to NULL.
+ERRORS
+	If the provided array is too small, ERANGE is returned.
+	If any other error occurs, EGENERIC is returned.
