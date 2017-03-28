@@ -7,17 +7,14 @@ Illinois Institute of Technology
 
 March 2017
 
-TODO
-----
+Quick reference
+---------------
+
 syscall wrappers are located in `src/minix/lib/libc/sys/topic.c`
 
 syscall implementations are located in `src/minix/servers/pm/topic.c`
 
-man pages are located in `src/minix/man/man2/`. Makefile too. 
- 
-* pass buffer and size arguments correctly in syscall wrappers and return result in allocated buffer for `topic_lookup()`, `topic_publish()` and `topic_retrieve()`. Use memory grant? Or maybe `sys_memcopy()`?
-* implement all syscalls. for now they just print their names.
-* install/generate man pages from Benoit's `doc/man`
+man pages are located in `src/minix/man/man2/`. corresponding Makefile too.
 
 Project members
 ---------------
