@@ -254,7 +254,7 @@ int do_topic_publish(void) {
     struct topic **t;
     struct user_elt **u, **u2, *u_tmp;
     struct topic_message **m, *m_tmp;
-    int n;
+    int n, r;
 
     /* get arguments */
     topicid_t   id      = (topicid_t) m_in.m1_i1;
@@ -277,24 +277,31 @@ int do_topic_publish(void) {
     for(n = 0, m = &(*t)->messages; *m; m = &(*m)->next) {
         /* check if all waiting processes are still alive */
         for(u = &(*m)->to_retrieve; *u; u = &(*u)->next) {
-            if( kill( (*u)->pid, 0) == -1 ) {
-                if(errno == ESRCH) {
-                    /* the process has died. we shouldn't be waiting for it */
-                    /* remove it from the subscribers list */
-                    u2 = get_user( &(*t)->subscribers, (*u)->pid );
+            /* we want to call kill( (*u)->pid, 0), but since we are within a
+               syscall implementation, we can't. So we use its implementation
+               from signal.c called check_sig() */
+            r = check_sig( (*u)->pid, 0, FALSE /* ksig */);
+            if( r == OK ) continue; /* process is still alive */
+            if( r == ESRCH) {
+                /* the process has died. we shouldn't be waiting for it */
+                /* remove it from the subscribers list if still present */
+                u2 = get_user( &(*t)->subscribers, (*u)->pid );
+                if( *u2 ) {
                     u_tmp = (*u2)->next;
                     free(*u2);
                     *u2 = u_tmp;
-                    /* remove it from the to_retrieve list */
-                    u_tmp = (*u)->next;
-                    free(*u);
-                    *u = u_tmp;
-                    if( !(*u) ) break; /* if it was the last element, don't iterate to the next */
-                } else if(errno == EPERM) {
-                    printf("*** do_topic_publish(): can't check if subscriber is alive ***\n");
-                } else {
-                    printf("*** do_topic_publish(): is 0 an invalid signal?!?! ***\n");
                 }
+                /* and remove it from the to_retrieve list */
+                u_tmp = (*u)->next;
+                free(*u);
+                *u = u_tmp;
+                if( !(*u) ) break; /* if it was the last element of the to_retrieve list, don't iterate to the next */
+            } else if( r == EPERM) {
+                printf("*** do_topic_publish(): can't check if subscriber is alive ***\n");
+            } else if( r == EINVAL) {
+                printf("*** do_topic_publish(): is 0 an invalid signal?!?! ***\n");
+            } else {
+                printf("*** do_topic_publish(): check_sig() returned error code %d ***\n", r);
             }
         }
         /* if the to_retrieve list is empty, remove this message from the topic */

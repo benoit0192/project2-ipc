@@ -45,7 +45,6 @@ int main(void) {
 
     test_begin("retrieve message, but no message available");
     r = topic_retrieve(12, (void*)&msg);
-    printf("r=%d, errno=%d, ENOMSG=%d\n", r, errno, ENOMSG);
     assert(r == -1 && errno == ENOMSG);
     test_end();
 
@@ -61,6 +60,7 @@ int main(void) {
 
     test_begin("subscriber retrieve from existing topic, registration OK");
     r = topic_retrieve(12, (void*)&msg);
+    printf("r=%d, errno=%d, msg=\"%s\"\n", r, errno, msg);
     assert(r == 4 && msg[0] == 'a' && msg[1] == 'b' && msg[2] == 'c' && msg[3] == 0);
     free(msg);
     test_end();

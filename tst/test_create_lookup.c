@@ -27,7 +27,6 @@ int main(void) {
 
     test_begin("creation of already existing topic");
     r = topic_create(0);
-    printf("r=%d, errno=%d, EALREADY=%d\n", r, errno, EALREADY);
     assert(r == -1 && errno == EALREADY);
     test_end();
 
