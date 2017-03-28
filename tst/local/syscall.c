@@ -1,7 +1,8 @@
-#include "pm.h"
+#include "local.h"
+
 #include <stdlib.h>
 #include <stdio.h>
-#include <minix/syslib.h>
+
 #include <signal.h>
 
 #define MAX_MSG_PER_TOPIC 5
@@ -88,7 +89,7 @@ int do_topic_lookup(void) {
 
     /* count topics to verify that topic_ids is large enough */
     for(it = topics, n = 0; it; it = it->next)
-        if(++n > count) return ERANGE;
+        if(++n > count) return -ERANGE;
 
     /* special case when there is no topics */
     if(n == 0) return 0;
@@ -100,7 +101,7 @@ int do_topic_lookup(void) {
 
     /* copy result to user space */
     if(sys_datacopy(PM_PROC_NR, (vir_bytes)ids, who_e, (vir_bytes) topic_ids, n * sizeof(topicid_t)) != OK)
-        return EGENERIC;
+        return -EGENERIC;
 
     /* return array size */
     return n;
@@ -118,11 +119,11 @@ int do_topic_create(void) {
 
     /* search for an already existing topic with the same id */
     t = get_topic(id);
-    if( *t ) return EALREADY;
+    if( *t ) return -EALREADY;
 
     /* create the new topic structure */
     *t = malloc(sizeof(**t));
-    if( !(*t) ) return ENOMEM;
+    if( !(*t) ) return -ENOMEM;
 
     /* set struct fields */
     (*t)->id = id;
@@ -148,15 +149,15 @@ int do_topic_publisher_subscribe(void) {
 
     /* topic must exist */
     t = get_topic(id);
-    if( !(*t) ) return ENOENT;
+    if( !(*t) ) return -ENOENT;
 
     /* look for user in publisher list */
     u = get_user( &(*t)->publishers, pid );
     /* user must not be arleady registered */
-    if( *u ) return EALREADY;
+    if( *u ) return -EALREADY;
     /* add user to the list */
     *u = malloc(sizeof(**u));
-    if( !(*u) ) return ENOMEM;
+    if( !(*u) ) return -ENOMEM;
 
     /* set struct fields */
     (*u)->pid = pid;
@@ -179,12 +180,12 @@ int do_topic_publisher_unsubscribe(void) {
 
     /* topic must exist */
     t = get_topic(id);
-    if( !(*t) ) return ENOENT;
+    if( !(*t) ) return -ENOENT;
 
     /* look for user in publisher list */
     u = get_user( &(*t)->publishers, pid );
     /* user must be arleady registered */
-    if( !(*u) ) return EINVAL;
+    if( !(*u) ) return -EINVAL;
     /* remove user from the list */
     tmp = (*u)->next;
     free(*u);
@@ -204,15 +205,15 @@ int do_topic_client_subscribe(void) {
 
     /* topic must exist */
     t = get_topic(id);
-    if( !(*t) ) return ENOENT;
+    if( !(*t) ) return -ENOENT;
 
     /* look for user in subscribers list */
     u = get_user( &(*t)->subscribers, pid );
     /* user must not be arleady registered */
-    if( *u ) return EALREADY;
+    if( *u ) return -EALREADY;
     /* add user to the list */
     *u = malloc(sizeof(**u));
-    if( !(*u) ) return ENOMEM;
+    if( !(*u) ) return -ENOMEM;
 
     /* set struct fields */
     (*u)->pid = pid;
@@ -232,12 +233,12 @@ int do_topic_client_unsubscribe(void) {
 
     /* topic must exist */
     t = get_topic(id);
-    if( !(*t) ) return ENOENT;
+    if( !(*t) ) return -ENOENT;
 
     /* look for user in subscribers list */
     u = get_user( &(*t)->subscribers, pid );
     /* user must be arleady registered */
-    if( !(*u) ) return EINVAL;
+    if( !(*u) ) return -EINVAL;
     /* remove user from the list */
     tmp = (*u)->next;
     free(*u);
@@ -263,15 +264,15 @@ int do_topic_publish(void) {
     pid_t       pid     = (pid_t)     m_in.m1_i3;
 
     /* check buffer size validity */
-    if( size == 0 ) return EINVAL;
+    if( size == 0 ) return -EINVAL;
 
     /* topic must exist */
     t = get_topic(id);
-    if( !(*t) ) return ENOENT;
+    if( !(*t) ) return -ENOENT;
 
     /* publisher must be registered */
     u = get_user( &(*t)->publishers, pid );
-    if( !(*u) ) return EACCES;
+    if( !(*u) ) return -EACCES;
 
     /* iterate over messages and remove those having an empty to_retrieve list */
     for(n = 0, m = &(*t)->messages; *m; m = &(*m)->next) {
@@ -312,24 +313,24 @@ int do_topic_publish(void) {
     }
 
     /* check if maximum number of messages in this topic is reached */
-    if(n >= MAX_MSG_PER_TOPIC) return ENOBUFS;
+    if(n >= MAX_MSG_PER_TOPIC) return -ENOBUFS;
 
     /* Add the new message in the topic */
     *m = malloc(sizeof(**m));
-    if( !(*m) ) return ENOMEM;
+    if( !(*m) ) return -ENOMEM;
 
     /* buffer is not contained in the message. get it from user space. */
     (*m)->buf = malloc(size);
     if( !(*m)->buf ) {
         free(*m);
         *m = NULL;
-        return ENOMEM;
+        return -ENOMEM;
     }
     if( sys_datacopy(who_e, (vir_bytes) vir_buf, PM_PROC_NR, (vir_bytes)(*m)->buf, size) != OK ) {
         free((*m)->buf);
         free(*m);
         *m = NULL;
-        return EGENERIC;
+        return -EGENERIC;
     }
 
     /* set struct fields */
@@ -350,7 +351,7 @@ int do_topic_publish(void) {
             free((*m)->buf);
             free(*m);
             *m = NULL;
-            return ENOMEM;
+            return -ENOMEM;
         }
         /* malloc succeeded. set user value */
         (*u2)->pid = (*u)->pid;
