@@ -24,7 +24,7 @@ sed -i '1i#include "local.h"' syscall.c
 sed -i '1i#include "local.h"' wrapper.c
 
 # change erro code signs in syscall.c
-err=( ERANGE EGENERIC EALREADY ENOMEM ENOENT EINVAL EACCES ENOBUFS )
+err=( ERANGE EGENERIC EALREADY ENOMEM ENOENT EINVAL EACCES ENOBUFS ENOMSG )
 for e in "${err[@]}"
 do
     sed -i "s/$e/-$e/g" ./syscall.c
@@ -38,7 +38,7 @@ rm test.h
 cp ../test.c .
 cp ../test.h .
 
-tests=( simple_test test_create_lookup test_publishers )
+tests=( simple_test test_create_lookup test_publishers test_subscribers )
 
 for t in "${tests[@]}"
 do

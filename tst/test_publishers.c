@@ -37,6 +37,11 @@ int main(void) {
     assert(r == 0);
     test_end();
 
+    test_begin("publisher registers to existing topic, already registered");
+    r = topic_publisher_subscribe(12);
+    assert(r == -1 && errno == EALREADY);
+    test_end();
+
     test_begin("publisher publish message of size 0");
     r = topic_publish(12, NULL, 0);
     assert(r == -1 && errno == EINVAL);
@@ -56,10 +61,10 @@ int main(void) {
     r = topic_publish(12, (void*)"abc", 4);
     assert(r == 0);
     test_end();
-exit(0);
+
     test_begin("publisher publish 4 more messages in existing topic");
     char msg[4][4] = {"def", "ghi", "jkl", "mno"};
-    for(int i = 0 ; i < 1; ++i) {
+    for(int i = 0 ; i < 4; ++i) {
         printf("%d... ", i+1); fflush(stdout);
         r = topic_publish(12, (void*)msg[i], 4);
         assert(r == 0);

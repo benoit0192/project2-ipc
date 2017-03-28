@@ -275,8 +275,6 @@ int do_topic_publish(void) {
 
     /* iterate over messages and remove those having an empty to_retrieve list */
     for(n = 0, m = &(*t)->messages; *m; m = &(*m)->next) {
-        printf("Message content is :\"%s\"\n", (*m)->buf);
-        printf("Next is :%p\n", (*m)->next);
         /* check if all waiting processes are still alive */
         for(u = &(*m)->to_retrieve; *u; u = &(*u)->next) {
             if( kill( (*u)->pid, 0) == -1 ) {
@@ -365,7 +363,7 @@ int do_topic_retrieve(void) {
 
     struct topic **t;
     struct user_elt **u,*tmp;
-    topic_message **m;
+    struct topic_message **m;
 
     /* get arguments */
     topicid_t   id      =  (topicid_t) m_in.m1_i1;
@@ -384,7 +382,7 @@ int do_topic_retrieve(void) {
         u = get_user( &(*m)->to_retrieve, pid );
         if( *u ) break;
     }
-    
+
     /* no message for the user */
     if( !(*m) ) return ENOMSG;
 

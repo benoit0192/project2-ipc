@@ -1,4 +1,4 @@
-TESTS=simple_test test_create_lookup test_publishers
+TESTS=simple_test test_create_lookup test_publishers test_subscribers
 CC=clang
 CFLAGS=-Wall
 

@@ -2,6 +2,7 @@
 #include <unistd.h> // prototypes
 #include <errno.h>
 #include <assert.h>
+#include <stdlib.h>
 
 
 int topic_lookup(topicid_t *ids, size_t count) {
