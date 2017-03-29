@@ -7,7 +7,7 @@ topic_retrieve - retrieve a message from a topic.
 .ft B
 #include <topic.h>
 
-int topic_retrieve(topicid_t id, void **buf)
+int topic_retrieve(topicid_t id, void *buf, size_t *size)
 .ft R
 .fi
 .SH DESCRIPTION
@@ -17,8 +17,9 @@ int topic_retrieve(topicid_t id, void **buf)
 ..
 .B topic_retrieve()
 allows a process to retrieve a message from a topic.
-The returned buffer is allocated by the function.
-The caller should free(3) the returned buffer.
+The user can provide a buffer \fBbuf\fP and its size \fB*size\fP. If the buffer is large enough to contain the result, then \fBbuf\fP is filled with the result, \fB*size\fP is set to the result size, and \fBbuf\fP is returned. Note that the result size can be smaller than the provided \fB*size\fP value, therefore the user should save the real buffer size in another variable before passing it to the function. If the buffer is to small, it is an error. (see ERRORS section)
+
+If \fBbuf\fP is NULL, a buffer large enough to contain the result is allocated by the function, is filled with the result and is returned. \fB*size\fP is set to the size of the allocated buffer. The caller should free(3) the returned buffer.
 
 .SH "RETURN VALUE
 On success, \fBbuf\fp is set to an allocated buffer containing a message, and the function returns the size of the message. Otherwise, a value of \-1 is returned, and the global variable errno is set to indicate the error.
@@ -33,6 +34,9 @@ The process is not registered to retrieve messages from this topic.
 .TP 15
 .B ENOMSG
 There is no messages for this user.
+.TP 15
+.B ENORANGE
+The provided buffer is too small to contain the result.
 .TP 15
 .B EGENERIC
 Any other error.
