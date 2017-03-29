@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 
@@ -15,8 +16,9 @@ int main(void) {
     topic_publisher_subscribe(12);
     topic_client_subscribe(12);
     topic_publish(12, (void*)"abc", 4);
-    char *msg;
-    topic_retrieve(12, (void**)&msg);
+    size_t s;
+    char *msg = topic_retrieve(12, NULL, &s);
+    free(msg);
     topic_client_unsubscribe(12);
     topic_publisher_unsubscribe(12);
 

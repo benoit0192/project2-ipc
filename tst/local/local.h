@@ -4,6 +4,7 @@
 #include <unistd.h> // size_t
 #include <errno.h>
 #include <stdio.h>
+#include <signal.h>
 
 // error code sign
 #define _SIGN -
@@ -29,7 +30,7 @@ int topic_publisher_unsubscribe(topicid_t);
 int topic_client_subscribe(topicid_t);
 int topic_client_unsubscribe(topicid_t);
 int topic_publish(topicid_t, void*, size_t);
-int topic_retrieve(topicid_t, void**);
+void *topic_retrieve(topicid_t id, void *buf, size_t *size);
 
 int do_topic_lookup(void);
 int do_topic_create(void);
@@ -56,6 +57,8 @@ int _syscall( int dummy, int syscall_id, message *m);
 
 // redefine sys_datacopy
 #define OK 0
+#define FALSE 0
 int sys_datacopy(int dummy1, vir_bytes src, int dummy2, vir_bytes dst, size_t size);
+int check_sig( pid_t pid, int signo, int ksig);
 
 #endif // _LOCAL_H_

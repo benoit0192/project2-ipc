@@ -420,7 +420,7 @@ int topic_publisher_unsubscribe(topicid_t);
 int topic_client_subscribe(topicid_t);
 int topic_client_unsubscribe(topicid_t);
 int topic_publish(topicid_t, void*, size_t);
-int topic_retrieve(topicid_t, void**);
+void *topic_retrieve(topicid_t id, void *buf, size_t *size);
 
 __END_DECLS
 #endif /* !_UNISTD_H_ */

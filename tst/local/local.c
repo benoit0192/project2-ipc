@@ -41,3 +41,7 @@ int sys_datacopy(int dummy1, vir_bytes src, int dummy2, vir_bytes dst, size_t si
         ((char*)dst)[i] = ((char*)src)[i];
     return 0;
 }
+
+int check_sig( pid_t pid, int signo, int ksig) {
+    return kill(pid, signo);
+}

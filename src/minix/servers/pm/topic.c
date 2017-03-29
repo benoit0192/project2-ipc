@@ -373,9 +373,10 @@ int do_topic_retrieve(void) {
     struct topic_message **m;
 
     /* get arguments */
-    topicid_t   id      =  (topicid_t) m_in.m1_i1;
-    vir_bytes   buf     =  (vir_bytes) m_in.m1_p1;
-    pid_t       pid     =  (pid_t)     m_in.m1_i2;
+    topicid_t   id      = (topicid_t) m_in.m1_i1;
+    vir_bytes   buf     = (vir_bytes) m_in.m1_p1;
+    pid_t       pid     = (pid_t)     m_in.m1_i2;
+    size_t      size    = (size_t)    m_in.m1_i3;
 
     /* topic must exist */
     t = get_topic(id);
@@ -395,6 +396,8 @@ int do_topic_retrieve(void) {
 
     /* if there is a buffer, copy the message to user space */
     if( buf ) {
+        /* provided buffer must be large enough */
+        if( size < (*m)->size ) return ERANGE;
         if(sys_datacopy(PM_PROC_NR, (vir_bytes)(*m)->buf, who_e, (vir_bytes) buf, (*m)->size) != OK)
             return EGENERIC;
         tmp = (*u)->next;
