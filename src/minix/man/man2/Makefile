@@ -11,6 +11,11 @@ MAN=	accept.2 access.2 bind.2 brk.2 chdir.2 chmod.2 chown.2 \
 	svrctl.2 symlink.2 sync.2 time.2 truncate.2 \
 	umask.2 uname.2 unlink.2 utime.2 wait.2 write.2
 
+MAN +=	topic_client_subscribe.2 topic_client_unsubscribe.2 \
+	topic_create.2 topic_lookup.2 topic_publish.2 \
+	topic_publisher_subscribe.2 topic_publisher_unsubscribe.2 \
+	topic_retrieve.2
+
 MLINKS += select.2 FD_CLR.2
 MLINKS += select.2 FD_ISSET.2
 MLINKS += select.2 FD_SET.2
