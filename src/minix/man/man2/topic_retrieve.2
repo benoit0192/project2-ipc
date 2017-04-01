@@ -22,7 +22,7 @@ The user can provide a buffer \fBbuf\fP and its size \fB*size\fP. If the buffer 
 If \fBbuf\fP is NULL, a buffer large enough to contain the result is allocated by the function, is filled with the result and is returned. \fB*size\fP is set to the size of the allocated buffer. The caller should free(3) the returned buffer.
 
 .SH "RETURN VALUE
-On success, \fBbuf\fp is set to an allocated buffer containing a message, and the function returns the size of the message. Otherwise, a value of \-1 is returned, and the global variable errno is set to indicate the error.
+On success, \fBbuf\fP is returned if it was provided, or a pointer to the allocated buffer if \fBbuf\fP was NULL. Otherwise, a value of \fBNULL\fP is returned, and the global variable errno is set to indicate the error.
 
 .SH ERRORS
 .TP 15
@@ -40,7 +40,7 @@ The provided buffer is too small to contain the result.
 .TP 15
 .B EGENERIC
 Any other error.
-	
+
 .SH "SEE ALSO"
 .BR topic_lookup (2)
 .BR topic_create (2),
